@@ -11,6 +11,7 @@
       text-align: center;
       padding: 40px;
       overflow-x: hidden;
+      transition: opacity 1s ease;
     }
 
     .cartoon {
@@ -55,6 +56,25 @@
       animation: sparkle 0.6s ease-out;
     }
 
+    .big-sparkle {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #ffffff 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      opacity: 1;
+      animation: big-sparkle 1s ease-out forwards;
+      z-index: 999;
+    }
+
+    @keyframes big-sparkle {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(10); opacity: 0; }
+    }
+
     @keyframes sparkle {
       0% { transform: scale(0.5); opacity: 1; }
       100% { transform: scale(2); opacity: 0; }
@@ -65,31 +85,68 @@
       margin-top: 15px;
       color: #b30059;
     }
+
+    .final-gif {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000cc;
+      z-index: 1000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      text-shadow: 0 0 10px pink;
+    }
+
+    .final-gif img {
+      max-width: 80%;
+      max-height: 80%;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
-<body>
+<body id="pageContent">
 
-  <!-- 🐻 Cute Cartoon GIF -->
+  <!-- 🧸 Cute Cartoon Above the Button -->
   <img class="cartoon" src="711f384dff486fdbad35cdf258188b2feafaaad6.gif" alt="Cute Cartoon" />
 
-  <!-- 💗 Love Button -->
+  <!-- 💖 Love Button -->
   <button class="love-button" id="loveButton">I love you 10x</button>
   <div class="counter" id="loveCounter"></div>
+
+  <!-- 💞 Final GIF Surprise -->
+  <div class="final-gif" id="finalGif">
+    <img src="bears-hug-love-you.gif" alt="I Love You So Much GIF" />
+    <div>I love you so much 💗</div>
+  </div>
 
   <script>
     const button = document.getElementById("loveButton");
     const counterDisplay = document.getElementById("loveCounter");
+    const finalGif = document.getElementById("finalGif");
+    const pageContent = document.getElementById("pageContent");
 
     const values = ["10x", "20x", "30x", "40x", "50x", "60x", "70x", "80x", "90x", "100x", "♾️"];
     let index = 0;
 
     button.addEventListener("click", function (e) {
       index++;
+
       if (index < values.length) {
         button.innerText = `I love you ${values[index]}`;
         counterDisplay.innerText = `That's ${values[index]} kisses 💋`;
-      } else {
-        counterDisplay.innerText = `That's infinite love for you 💞`;
       }
 
       // Sparkle effect
@@ -99,6 +156,23 @@
       sparkle.style.top = e.clientY - button.getBoundingClientRect().top + "px";
       button.appendChild(sparkle);
       setTimeout(() => sparkle.remove(), 600);
+
+      // Final state
+      if (values[index] === "♾️") {
+        // Big sparkle burst
+        const bigSparkle = document.createElement("div");
+        bigSparkle.classList.add("big-sparkle");
+        document.body.appendChild(bigSparkle);
+        setTimeout(() => bigSparkle.remove(), 1200);
+
+        // Fade out page
+        pageContent.classList.add("hidden");
+
+        // Show final GIF
+        setTimeout(() => {
+          finalGif.style.display = "flex";
+        }, 1000);
+      }
     });
   </script>
 
