@@ -119,37 +119,53 @@
 </head>
 <body id="pageContent">
 
-  <!-- 🧸 Cute Cartoon Above the Button -->
+  <!-- 💕 Cartoon -->
   <img class="cartoon" src="711f384dff486fdbad35cdf258188b2feafaaad6.gif" alt="Cute Cartoon" />
 
-  <!-- 💖 Love Button -->
+  <!-- 💘 Love Button -->
   <button class="love-button" id="loveButton">I love you 10x</button>
   <div class="counter" id="loveCounter"></div>
 
-  <!-- 💞 Final GIF Surprise -->
+  <!-- 🐻 Final Surprise GIF -->
   <div class="final-gif" id="finalGif">
     <img src="bears-hug-love-you.gif" alt="I Love You So Much GIF" />
     <div>I love you so much 💗</div>
   </div>
 
+  <!-- 🎶 Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="be-my-baby.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- 💡 JavaScript Logic -->
   <script>
     const button = document.getElementById("loveButton");
     const counterDisplay = document.getElementById("loveCounter");
     const finalGif = document.getElementById("finalGif");
     const pageContent = document.getElementById("pageContent");
+    const music = document.getElementById("bgMusic");
 
     const values = ["10x", "20x", "30x", "40x", "50x", "60x", "70x", "80x", "90x", "100x", "♾️"];
     let index = 0;
 
+    // Start music on any tap (browser-safe autoplay)
+    window.addEventListener('click', function () {
+      if (music.paused) {
+        music.play().catch(err => {
+          console.log("Autoplay blocked:", err);
+        });
+      }
+    }, { once: true });
+
     button.addEventListener("click", function (e) {
       index++;
-
       if (index < values.length) {
         button.innerText = `I love you ${values[index]}`;
         counterDisplay.innerText = `That's ${values[index]} kisses 💋`;
       }
 
-      // Sparkle effect
+      // Sparkle on tap
       const sparkle = document.createElement("div");
       sparkle.classList.add("sparkle");
       sparkle.style.left = e.clientX - button.getBoundingClientRect().left + "px";
@@ -157,18 +173,14 @@
       button.appendChild(sparkle);
       setTimeout(() => sparkle.remove(), 600);
 
-      // Final state
+      // If it's the last (infinity)
       if (values[index] === "♾️") {
-        // Big sparkle burst
         const bigSparkle = document.createElement("div");
         bigSparkle.classList.add("big-sparkle");
         document.body.appendChild(bigSparkle);
         setTimeout(() => bigSparkle.remove(), 1200);
 
-        // Fade out page
         pageContent.classList.add("hidden");
-
-        // Show final GIF
         setTimeout(() => {
           finalGif.style.display = "flex";
         }, 1000);
