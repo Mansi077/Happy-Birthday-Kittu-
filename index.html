@@ -37,11 +37,12 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      animation: throb 1.2s infinite;
     }
 
-    .love-button:hover {
-      background-color: #ff85c1;
-      transform: scale(1.05);
+    @keyframes throb {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     .sparkle {
@@ -68,56 +69,36 @@
 </head>
 <body>
 
-  <!-- 💕 Cartoon GIF holding the button -->
+  <!-- 🐻 Cute Cartoon GIF -->
   <img class="cartoon" src="711f384dff486fdbad35cdf258188b2feafaaad6.gif" alt="Cute Cartoon" />
 
-  <!-- 💝 Love button -->
-  <button class="love-button" id="loveButton">I love you 100x</button>
+  <!-- 💗 Love Button -->
+  <button class="love-button" id="loveButton">I love you 10x</button>
   <div class="counter" id="loveCounter"></div>
 
-  <!-- 🎵 Optional background music (uncomment if you've uploaded it) -->
-  <!--
-  <audio id="bgMusic" loop>
-    <source src="your-music-file.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
   <script>
-    const bgMusic = document.getElementById("bgMusic");
-    document.addEventListener('click', () => {
-      bgMusic.play().catch(() => {});
-    }, { once: true });
-  </script>
-  -->
-
-  <script>
-    let count = 100;
     const button = document.getElementById("loveButton");
     const counterDisplay = document.getElementById("loveCounter");
 
+    const values = ["10x", "20x", "30x", "40x", "50x", "60x", "70x", "80x", "90x", "100x", "♾️"];
+    let index = 0;
+
     button.addEventListener("click", function (e) {
-      count += 100;
-      if (count >= 10000) {
-        button.innerText = "I love you ♾️";
+      index++;
+      if (index < values.length) {
+        button.innerText = `I love you ${values[index]}`;
+        counterDisplay.innerText = `That's ${values[index]} kisses 💋`;
       } else {
-        button.innerText = `I love you ${count}x`;
+        counterDisplay.innerText = `That's infinite love for you 💞`;
       }
 
-      // Enlarge button briefly
-      button.style.transform = "scale(1.2)";
-      setTimeout(() => {
-        button.style.transform = "scale(1)";
-      }, 150);
-
-      // Add sparkles
+      // Sparkle effect
       const sparkle = document.createElement("div");
       sparkle.classList.add("sparkle");
       sparkle.style.left = e.clientX - button.getBoundingClientRect().left + "px";
       sparkle.style.top = e.clientY - button.getBoundingClientRect().top + "px";
       button.appendChild(sparkle);
       setTimeout(() => sparkle.remove(), 600);
-
-      // Update counter below
-      counterDisplay.innerText = `That's ${count} kisses for you 💋`;
     });
   </script>
 
